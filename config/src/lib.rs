@@ -20,7 +20,7 @@ pub struct ServerConfig {
         short,
         long,
         about = "bind address, like 127.0.0.1:8080",
-        default_value = "[::]:40000"
+        default_value = "0.0.0.0:5555"
     )]
     pub bind: String,
 }
@@ -43,17 +43,13 @@ pub struct ClientConfig {
         default_value = "50"
     )]
     pub conns_per_core: usize,
-    #[clap(
-        short,
-        long,
-        about = "QPS limit per core, leave blank means unlimited"
-    )]
+    #[clap(short, long, about = "QPS limit per core, leave blank means unlimited")]
     pub qps_per_core: Option<usize>,
     #[clap(
         short,
         long,
         about = "target address, like 127.0.0.1:8080",
-        default_value = "127.0.0.1:40000"
+        default_value = "127.0.0.1:5555"
     )]
     pub target: String,
 }
