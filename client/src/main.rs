@@ -1,7 +1,10 @@
 use std::{
     cell::UnsafeCell,
     rc::Rc,
-    sync::{atomic::{AtomicUsize, AtomicU64}, Arc},
+    sync::{
+        atomic::{AtomicU64, AtomicUsize},
+        Arc,
+    },
     time::Duration,
 };
 
@@ -46,7 +49,11 @@ CPU slot: {}",
         let eps_ = eps.clone();
         std::thread::spawn(move || {
             monoio::utils::bind_to_cpu_set(Some(cpu_)).unwrap();
-            let mut rt = RuntimeBuilder::<monoio::IoUringDriver>::new().with_entries(2560).enable_timer().build().unwrap();
+            let mut rt = RuntimeBuilder::<monoio::IoUringDriver>::new()
+                .with_entries(2560)
+                .enable_timer()
+                .build()
+                .unwrap();
             rt.block_on(run_thread(count_, eps_, cfg_));
             println!("Thread {} finished", cpu_);
         });
@@ -61,7 +68,7 @@ CPU slot: {}",
         let eps_now = eps.load(std::sync::atomic::Ordering::Relaxed);
         let eps_sec = instant.elapsed().as_secs_f32();
         println!(
-            "{:.3}: NAdd: {}; NSum: {}; NAverage: {:.3}, LatencyAverage: {:.3} us",
+            "{:.3}: NAdd: {}  NSum: {}  NAverage: {:.3}  LatencyAverage: {:.3} us",
             eps_sec,
             count_now - count_last,
             count_now,
